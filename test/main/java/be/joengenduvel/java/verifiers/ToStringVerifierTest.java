@@ -14,6 +14,11 @@ public class ToStringVerifierTest {
         ToStringVerifier.forClass(ClassWithoutToString.class).containsAllPrivateFields(new ClassWithoutToString());
     }
 
+    @Test(expected = WrongToStringImplementation.class)
+    public void shouldFailWhenProvidedWithNull() {
+        ToStringVerifier.forClass(TestClass.class).containsAllPrivateFields(null);
+    }
+
     private class TestClass {
         private final int field2 = 2;
         private String field1 = "field1";

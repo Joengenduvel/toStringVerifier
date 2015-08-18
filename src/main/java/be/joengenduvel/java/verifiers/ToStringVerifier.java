@@ -18,7 +18,7 @@ public class ToStringVerifier<T> {
     }
 
     public static <R> ToStringVerifier<R> forClass(Class<R> classToVerify) {
-        return new ToStringVerifier<R>(classToVerify);
+        return new ToStringVerifier<>(classToVerify);
     }
 
     public void containsAllPrivateFields(T objectToTest) {
@@ -34,13 +34,13 @@ public class ToStringVerifier<T> {
                     throw new WrongToStringImplementation(toString, privateDeclaredField, fieldValue, e);
                 }
             }
-        } catch (AssertionError e) {
+        } catch (NullPointerException | AssertionError e) {
             throw new WrongToStringImplementation(classToVerify, e);
         }
     }
 
     private List<Field> getDeclaredPrivateFields(Class<?> aClass) {
-        ArrayList<Field> privateDeclaredFields = new ArrayList<Field>();
+        ArrayList<Field> privateDeclaredFields = new ArrayList<>();
         Field[] declaredFields = aClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
             if (Modifier.isPrivate(declaredField.getModifiers())) {
