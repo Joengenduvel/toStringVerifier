@@ -16,7 +16,7 @@ public class ToStringVerifierTest {
 
     @Test(expected = WrongToStringImplementation.class)
     public void shouldFailWhenProvidedWithNull() {
-        ToStringVerifier.forClass(TestClass.class).containsAllPrivateFields(null);
+        ToStringVerifier.forClass(ClassWithToString.class).containsAllPrivateFields(null);
     }
 
     @Test
@@ -25,19 +25,14 @@ public class ToStringVerifierTest {
         ToStringVerifier.forClass(ClassContainingJacocoData.class).containsAllPrivateFields(new ClassContainingJacocoData());
     }
 
-    private class TestClass {
-        private final int field2 = 2;
-        private String field1 = "field1";
-    }
-
     private class ClassWithoutToString {
         private final int field2 = 2;
         private String field1 = "field1";
     }
 
     private class ClassWithToString {
-        private final int field2 = 2;
-        private String field1 = "field1";
+        protected final int field2 = 2;
+        protected String field1 = "field1";
 
         @Override
         public String toString() {
@@ -48,15 +43,7 @@ public class ToStringVerifierTest {
         }
     }
 
-    private class ClassContainingJacocoData {
-        private Object $jacocoData = null;
-        private String field1 = "field1";
-
-        @Override
-        public String toString() {
-            return "SomeClass{" +
-                    "field1='" + field1 + '\'' +
-                    '}';
-        }
+    private class ClassContainingJacocoData extends ClassWithToString {
+        private Object $jacocoData = "Some data";
     }
 }
