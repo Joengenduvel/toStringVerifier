@@ -19,6 +19,12 @@ public class ToStringVerifierTest {
         ToStringVerifier.forClass(TestClass.class).containsAllPrivateFields(null);
     }
 
+    @Test
+    public void shouldIgnoreJacocoFields() {
+        Class<ClassWithToString> classWithToStringClass = ClassWithToString.class;
+        ToStringVerifier.forClass(ClassContainingJacocoData.class).containsAllPrivateFields(new ClassContainingJacocoData());
+    }
+
     private class TestClass {
         private final int field2 = 2;
         private String field1 = "field1";
@@ -38,6 +44,18 @@ public class ToStringVerifierTest {
             return "ClassWithToString{" +
                     "field1='" + field1 + '\'' +
                     ", field2=" + field2 +
+                    '}';
+        }
+    }
+
+    private class ClassContainingJacocoData {
+        private Object $jacocoData = null;
+        private String field1 = "field1";
+
+        @Override
+        public String toString() {
+            return "SomeClass{" +
+                    "field1='" + field1 + '\'' +
                     '}';
         }
     }

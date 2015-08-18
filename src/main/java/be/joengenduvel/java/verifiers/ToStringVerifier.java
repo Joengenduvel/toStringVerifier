@@ -3,6 +3,7 @@ package be.joengenduvel.java.verifiers;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -10,6 +11,7 @@ import static org.hamcrest.core.StringContains.containsString;
 
 public class ToStringVerifier<T> {
 
+    private static final List<String> FIELDS_TO_IGNORE = Arrays.asList("$jacocoData");
     private final Class<T> classToVerify;
 
 
@@ -43,7 +45,7 @@ public class ToStringVerifier<T> {
         ArrayList<Field> privateDeclaredFields = new ArrayList<>();
         Field[] declaredFields = aClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            if (Modifier.isPrivate(declaredField.getModifiers())) {
+            if (Modifier.isPrivate(declaredField.getModifiers()) && !FIELDS_TO_IGNORE.contains(declaredField.getName())) {
                 declaredField.setAccessible(true);
                 privateDeclaredFields.add(declaredField);
             }
