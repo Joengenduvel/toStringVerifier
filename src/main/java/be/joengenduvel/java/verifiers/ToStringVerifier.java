@@ -28,12 +28,17 @@ public class ToStringVerifier<T> {
             String toString = objectToTest.toString();
             for (Field privateDeclaredField : getDeclaredPrivateFields(classToVerify)) {
                 assertThat(toString, containsString(privateDeclaredField.getName()));
-                String fieldValue = null;
+                String fieldValueString = null;
                 try {
-                    fieldValue = privateDeclaredField.get(objectToTest).toString();
-                    assertThat(toString, containsString(fieldValue));
+                    Object fieldValue = privateDeclaredField.get(objectToTest);
+                    if (fieldValue == null) {
+                        fieldValueString = "null";
+                    } else {
+                        fieldValueString = fieldValue.toString();
+                    }
+                    assertThat(toString, containsString(fieldValueString));
                 } catch (IllegalAccessException e) {
-                    throw new WrongToStringImplementation(toString, privateDeclaredField, fieldValue, e);
+                    throw new WrongToStringImplementation(toString, privateDeclaredField, fieldValueString, e);
                 }
             }
         } catch (NullPointerException | AssertionError e) {

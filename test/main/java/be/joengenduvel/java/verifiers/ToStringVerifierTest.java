@@ -21,8 +21,12 @@ public class ToStringVerifierTest {
 
     @Test
     public void shouldIgnoreJacocoFields() {
-        Class<ClassWithToString> classWithToStringClass = ClassWithToString.class;
         ToStringVerifier.forClass(ClassContainingJacocoData.class).containsAllPrivateFields(new ClassContainingJacocoData());
+    }
+
+    @Test(expected = WrongToStringImplementation.class)
+    public void shouldFailWhenFieldIsNotPresentInToString() {
+        ToStringVerifier.forClass(ClassWithWrongToString.class).containsAllPrivateFields(new ClassWithWrongToString());
     }
 
     private class ClassWithoutToString {
@@ -31,8 +35,36 @@ public class ToStringVerifierTest {
     }
 
     private class ClassWithToString {
-        protected final int field2 = 2;
-        protected String field1 = "field1";
+        private final int field2 = 2;
+        private String field1 = "field1";
+        private Object field3 = null;
+
+        @Override
+        public String toString() {
+            return "ClassWithToString{" +
+                    "field2=" + field2 +
+                    ", field1='" + field1 + '\'' +
+                    ", field3=" + field3 +
+                    '}';
+        }
+
+    }
+
+    private class ClassWithWrongToString {
+        private final int field2 = 2;
+        private String field1 = "field1";
+
+        @Override
+        public String toString() {
+            return "ClassWithToString{" +
+                    "field1='" + field1 + '}';
+        }
+    }
+
+    private class ClassContainingJacocoData {
+        private final int field2 = 2;
+        private Object $jacocoData = "Some data";
+        private String field1 = "field1";
 
         @Override
         public String toString() {
@@ -41,9 +73,5 @@ public class ToStringVerifierTest {
                     ", field2=" + field2 +
                     '}';
         }
-    }
-
-    private class ClassContainingJacocoData extends ClassWithToString {
-        private Object $jacocoData = "Some data";
     }
 }
