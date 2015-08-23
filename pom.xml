@@ -6,7 +6,24 @@
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>toString verifier</name>
-    <url>http://maven.apache.org</url>
+    <description>
+        A tool to let you write unit test for the toString method.
+        This can be especially usefull if you use the lombok plugin.
+    </description>
+    <url>https://github.com/Joengenduvel/toStringVerifier</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Robby Decosemaeker</name>
+            <email>robby.decosemaeker@telenet.be</email>
+        </developer>
+    </developers>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
