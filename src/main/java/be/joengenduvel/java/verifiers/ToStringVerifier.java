@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.StringContains.containsString;
-
 public class ToStringVerifier<T> {
 
     private static final List<String> FIELDS_TO_ALWAYS_IGNORE = Arrays.asList("$jacocoData");
@@ -34,19 +31,28 @@ public class ToStringVerifier<T> {
         try {
             String toString = objectToTest.toString();
             for (Field privateDeclaredField : getDeclaredPrivateFields(classToVerify)) {
-                assertThat(toString, containsString(privateDeclaredField.getName()));
+                if (!toString.contains(privateDeclaredField.getName())) {
+                    fieldNameNotFound(toString, privateDeclaredField);
+                }
                 String fieldValueString = null;
                 try {
                     fieldValueString = String.valueOf(privateDeclaredField.get(objectToTest));
-                    assertThat(toString, containsString(fieldValueString));
+                    if (!toString.contains(fieldValueString)) {
+                        valueNotFound(toString, privateDeclaredField, fieldValueString);
+                    }
                 } catch (IllegalAccessException e) {
-                    throw new WrongToStringImplementationException(toString, privateDeclaredField, fieldValueString, e);
+                    fail(toString, privateDeclaredField, fieldValueString, e);
                 }
             }
-        } catch (NullPointerException | AssertionError e) {
+        } catch (NullPointerException e) {
             throw new WrongToStringImplementationException(classToVerify, e);
         }
     }
+
+    private void fieldNameNotFound(String toString, Field privateDeclaredField) {
+        fail(toString, privateDeclaredField, null, null);
+    }
+
 
     private List<Field> getDeclaredPrivateFields(Class<?> aClass) {
         ArrayList<Field> privateDeclaredFields = new ArrayList<>();
@@ -60,7 +66,17 @@ public class ToStringVerifier<T> {
         return privateDeclaredFields;
     }
 
+
     private boolean fieldNeedsToBeIgnored(String name) {
         return FIELDS_TO_ALWAYS_IGNORE.contains(name) || fieldsToIgnore.contains(name);
+    }
+
+
+    private void valueNotFound(String toString, Field privateDeclaredField, String fieldValueString) {
+        fail(toString, privateDeclaredField, fieldValueString, null);
+    }
+
+    private void fail(String toString, Field field, String fieldValue, Throwable cause) {
+        throw new WrongToStringImplementationException(toString, field, fieldValue, cause);
     }
 }
