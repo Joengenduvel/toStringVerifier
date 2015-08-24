@@ -38,11 +38,11 @@ public class ToStringVerifier<T> {
                     }
                     assertThat(toString, containsString(fieldValueString));
                 } catch (IllegalAccessException e) {
-                    throw new WrongToStringImplementation(toString, privateDeclaredField, fieldValueString, e);
+                    throw new WrongToStringImplementationException(toString, privateDeclaredField, fieldValueString, e);
                 }
             }
         } catch (NullPointerException | AssertionError e) {
-            throw new WrongToStringImplementation(classToVerify, e);
+            throw new WrongToStringImplementationException(classToVerify, e);
         }
     }
 

@@ -9,12 +9,12 @@ public class ToStringVerifierTest {
         ToStringVerifier.forClass(ClassWithToString.class).containsAllPrivateFields(new ClassWithToString());
     }
 
-    @Test(expected = WrongToStringImplementation.class)
+    @Test(expected = WrongToStringImplementationException.class)
     public void shouldFailWhenToStringIsNotImplemented() {
         ToStringVerifier.forClass(ClassWithoutToString.class).containsAllPrivateFields(new ClassWithoutToString());
     }
 
-    @Test(expected = WrongToStringImplementation.class)
+    @Test(expected = WrongToStringImplementationException.class)
     public void shouldFailWhenProvidedWithNull() {
         ToStringVerifier.forClass(ClassWithToString.class).containsAllPrivateFields(null);
     }
@@ -24,7 +24,7 @@ public class ToStringVerifierTest {
         ToStringVerifier.forClass(ClassContainingJacocoData.class).containsAllPrivateFields(new ClassContainingJacocoData());
     }
 
-    @Test(expected = WrongToStringImplementation.class)
+    @Test(expected = WrongToStringImplementationException.class)
     public void shouldFailWhenFieldIsNotPresentInToString() {
         ToStringVerifier.forClass(ClassWithWrongToString.class).containsAllPrivateFields(new ClassWithWrongToString());
     }
