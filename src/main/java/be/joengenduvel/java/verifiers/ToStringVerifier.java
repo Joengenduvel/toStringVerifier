@@ -11,16 +11,23 @@ import static org.hamcrest.core.StringContains.containsString;
 
 public class ToStringVerifier<T> {
 
-    private static final List<String> FIELDS_TO_IGNORE = Arrays.asList("$jacocoData");
+    private static final List<String> FIELDS_TO_ALWAYS_IGNORE = Arrays.asList("$jacocoData");
     private final Class<T> classToVerify;
+    private final List<String> fieldsToIgnore;
 
 
     private ToStringVerifier(Class<T> classToVerify) {
         this.classToVerify = classToVerify;
+        this.fieldsToIgnore = new ArrayList<>();
     }
 
     public static <R> ToStringVerifier<R> forClass(Class<R> classToVerify) {
         return new ToStringVerifier<>(classToVerify);
+    }
+
+    public ToStringVerifier<T> ignore(String... fieldNames) {
+        fieldsToIgnore.addAll(Arrays.asList(fieldNames));
+        return this;
     }
 
     public void containsAllPrivateFields(T objectToTest) {
@@ -30,12 +37,7 @@ public class ToStringVerifier<T> {
                 assertThat(toString, containsString(privateDeclaredField.getName()));
                 String fieldValueString = null;
                 try {
-                    Object fieldValue = privateDeclaredField.get(objectToTest);
-                    if (fieldValue == null) {
-                        fieldValueString = "null";
-                    } else {
-                        fieldValueString = fieldValue.toString();
-                    }
+                    fieldValueString = String.valueOf(privateDeclaredField.get(objectToTest));
                     assertThat(toString, containsString(fieldValueString));
                 } catch (IllegalAccessException e) {
                     throw new WrongToStringImplementationException(toString, privateDeclaredField, fieldValueString, e);
@@ -50,11 +52,15 @@ public class ToStringVerifier<T> {
         ArrayList<Field> privateDeclaredFields = new ArrayList<>();
         Field[] declaredFields = aClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            if (Modifier.isPrivate(declaredField.getModifiers()) && !FIELDS_TO_IGNORE.contains(declaredField.getName())) {
+            if (Modifier.isPrivate(declaredField.getModifiers()) && !fieldNeedsToBeIgnored(declaredField.getName())) {
                 declaredField.setAccessible(true);
                 privateDeclaredFields.add(declaredField);
             }
         }
         return privateDeclaredFields;
+    }
+
+    private boolean fieldNeedsToBeIgnored(String name) {
+        return FIELDS_TO_ALWAYS_IGNORE.contains(name) || fieldsToIgnore.contains(name);
     }
 }

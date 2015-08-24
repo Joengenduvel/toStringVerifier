@@ -29,6 +29,11 @@ public class ToStringVerifierTest {
         ToStringVerifier.forClass(ClassWithWrongToString.class).containsAllPrivateFields(new ClassWithWrongToString());
     }
 
+    @Test
+    public void shouldBeAbleToIgnoreFields() {
+        ToStringVerifier.forClass(ClassWithWrongToString.class).ignore("field2").containsAllPrivateFields(new ClassWithWrongToString());
+    }
+
     private class ClassWithoutToString {
         private final int field2 = 2;
         private String field1 = "field1";
