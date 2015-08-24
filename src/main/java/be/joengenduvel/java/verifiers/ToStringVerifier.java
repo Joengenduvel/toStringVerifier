@@ -28,31 +28,26 @@ public class ToStringVerifier<T> {
     }
 
     public void containsAllPrivateFields(T objectToTest) {
-        try {
+        if (objectToTest != null) {
             String toString = objectToTest.toString();
             for (Field privateDeclaredField : getDeclaredPrivateFields(classToVerify)) {
                 if (!toString.contains(privateDeclaredField.getName())) {
-                    fieldNameNotFound(toString, privateDeclaredField);
+                    throw WrongToStringImplementationException.forFieldNameNotFound(privateDeclaredField, classToVerify, toString);
                 }
                 String fieldValueString = null;
                 try {
                     fieldValueString = String.valueOf(privateDeclaredField.get(objectToTest));
                     if (!toString.contains(fieldValueString)) {
-                        valueNotFound(toString, privateDeclaredField, fieldValueString);
+                        throw WrongToStringImplementationException.forValueNotFound(privateDeclaredField, fieldValueString, classToVerify, toString);
                     }
                 } catch (IllegalAccessException e) {
-                    fail(toString, privateDeclaredField, fieldValueString, e);
+                    throw WrongToStringImplementationException.forIllegalAccess(privateDeclaredField, classToVerify, e);
                 }
             }
-        } catch (NullPointerException e) {
-            throw new WrongToStringImplementationException(classToVerify, e);
+        } else {
+            throw WrongToStringImplementationException.forObjectNull(classToVerify);
         }
     }
-
-    private void fieldNameNotFound(String toString, Field privateDeclaredField) {
-        fail(toString, privateDeclaredField, null, null);
-    }
-
 
     private List<Field> getDeclaredPrivateFields(Class<?> aClass) {
         ArrayList<Field> privateDeclaredFields = new ArrayList<>();
@@ -66,17 +61,7 @@ public class ToStringVerifier<T> {
         return privateDeclaredFields;
     }
 
-
     private boolean fieldNeedsToBeIgnored(String name) {
         return FIELDS_TO_ALWAYS_IGNORE.contains(name) || fieldsToIgnore.contains(name);
-    }
-
-
-    private void valueNotFound(String toString, Field privateDeclaredField, String fieldValueString) {
-        fail(toString, privateDeclaredField, fieldValueString, null);
-    }
-
-    private void fail(String toString, Field field, String fieldValue, Throwable cause) {
-        throw new WrongToStringImplementationException(toString, field, fieldValue, cause);
     }
 }
