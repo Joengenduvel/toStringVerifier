@@ -34,7 +34,7 @@ public class ToStringVerifier<T> {
                 if (!toString.contains(privateDeclaredField.getName())) {
                     throw WrongToStringImplementationException.forFieldNameNotFound(privateDeclaredField, classToVerify, toString);
                 }
-                String fieldValueString = null;
+                String fieldValueString;
                 try {
                     fieldValueString = String.valueOf(privateDeclaredField.get(objectToTest));
                     if (!toString.contains(fieldValueString)) {
