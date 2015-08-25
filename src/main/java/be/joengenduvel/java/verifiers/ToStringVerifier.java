@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ToStringVerifier<T> {
 
-    private static final List<String> FIELDS_TO_ALWAYS_IGNORE = Arrays.asList("$jacocoData");
+    private static final List<String> FIELDS_TO_ALWAYS_IGNORE = ConfigurationManager.getInstance().getFieldsToIgnore();
     private final Class<T> classToVerify;
     private final List<String> fieldsToIgnore;
 
@@ -28,8 +28,7 @@ public class ToStringVerifier<T> {
     }
 
     public void containsAllPrivateFields(T objectToTest) {
-        if (objectToTest != null) {
-            String toString = objectToTest.toString();
+        String toString = getToString(objectToTest);
             for (Field privateDeclaredField : getDeclaredPrivateFields(classToVerify)) {
                 if (!toString.contains(privateDeclaredField.getName())) {
                     throw WrongToStringImplementationException.forFieldNameNotFound(privateDeclaredField, classToVerify, toString);
@@ -44,8 +43,24 @@ public class ToStringVerifier<T> {
                     throw WrongToStringImplementationException.forIllegalAccess(privateDeclaredField, classToVerify, e);
                 }
             }
-        } else {
+
+    }
+
+    private String getToString(T objectToTest) {
+        verifyNotNull(objectToTest);
+        return objectToTest.toString();
+    }
+
+    private void verifyNotNull(T objectToTest) {
+        if (objectToTest == null) {
             throw WrongToStringImplementationException.forObjectNull(classToVerify);
+        }
+    }
+
+    public void containsClassName(T objectToTest) {
+        String toString = getToString(objectToTest);
+        if (!toString.contains(classToVerify.getSimpleName())) {
+            throw WrongToStringImplementationException.forClassNameNotFound(toString, classToVerify.getSimpleName(), classToVerify);
         }
     }
 
