@@ -9,6 +9,7 @@ public class WrongToStringImplementationException extends RuntimeException {
     private static final String FIELD_NOT_ACCESSABLE = "Could not verify field '%s' in class '%s' because %s";
     private static final String VALUE_NOT_FOUND = "Could not find the value '%s' of '%s' in '%s' for class '%s'";
     private static final String FIELD_NOT_FOUND = "Could not find field '%s' in '%s' for class '%s'";
+    private static final String CLASS_NAME_NOT_FOUND = "Could not find the class name '%s' in %s for class %s";
 
     private WrongToStringImplementationException(String message, Throwable cause) {
         super(message, cause);
@@ -32,5 +33,9 @@ public class WrongToStringImplementationException extends RuntimeException {
 
     public static WrongToStringImplementationException forFieldNameNotFound(Field field, Class<?> classToVerify, String toString) {
         return new WrongToStringImplementationException(String.format(FIELD_NOT_FOUND, field.getName(), toString, classToVerify));
+    }
+
+    public static WrongToStringImplementationException forClassNameNotFound(String toString, String classToVerifyName, Class<?> classToVerify) {
+        return new WrongToStringImplementationException(String.format(CLASS_NAME_NOT_FOUND, classToVerifyName, toString, classToVerify));
     }
 }
