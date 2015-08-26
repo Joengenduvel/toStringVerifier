@@ -54,6 +54,11 @@ public class ToStringVerifier<T> {
         }
     }
 
+    public void verify(T objectToTest) {
+        containsClassName(objectToTest);
+        containsAllPrivateFields(objectToTest);
+    }
+
     private String getToString(T objectToTest) {
         verifyNotNull(objectToTest);
         return objectToTest.toString();
