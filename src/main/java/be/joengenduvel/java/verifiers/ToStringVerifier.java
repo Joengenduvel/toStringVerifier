@@ -46,6 +46,14 @@ public class ToStringVerifier<T> {
 
     }
 
+
+    public void containsClassName(T objectToTest) {
+        String toString = getToString(objectToTest);
+        if (!toString.contains(classToVerify.getSimpleName())) {
+            throw WrongToStringImplementationException.forClassNameNotFound(toString, classToVerify.getSimpleName(), classToVerify);
+        }
+    }
+
     private String getToString(T objectToTest) {
         verifyNotNull(objectToTest);
         return objectToTest.toString();
@@ -54,13 +62,6 @@ public class ToStringVerifier<T> {
     private void verifyNotNull(T objectToTest) {
         if (objectToTest == null) {
             throw WrongToStringImplementationException.forObjectNull(classToVerify);
-        }
-    }
-
-    public void containsClassName(T objectToTest) {
-        String toString = getToString(objectToTest);
-        if (!toString.contains(classToVerify.getSimpleName())) {
-            throw WrongToStringImplementationException.forClassNameNotFound(toString, classToVerify.getSimpleName(), classToVerify);
         }
     }
 

@@ -1,5 +1,6 @@
 package be.joengenduvel.java.verifiers;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ToStringVerifierTest {
@@ -26,12 +27,24 @@ public class ToStringVerifierTest {
 
     @Test(expected = WrongToStringImplementationException.class)
     public void containsAllPrivateFields_shouldFailWhenFieldIsNotPresentInToString() {
-        ToStringVerifier.forClass(ClassWithWrongToString.class).containsAllPrivateFields(new ClassWithWrongToString());
+        ToStringVerifier.forClass(ClassWithMissingFieldInToString.class).containsAllPrivateFields(new ClassWithMissingFieldInToString());
+    }
+
+    @Test(expected = WrongToStringImplementationException.class)
+    public void containsAllPrivateFields_shouldFailWhenValueIsNotPresentInToString() {
+        ToStringVerifier.forClass(ClassWithMissingValueInToString.class).containsAllPrivateFields(new ClassWithMissingValueInToString());
     }
 
     @Test
     public void containsAllPrivateFields_shouldBeAbleToIgnoreFields() {
-        ToStringVerifier.forClass(ClassWithWrongToString.class).ignore("field2").containsAllPrivateFields(new ClassWithWrongToString());
+        ToStringVerifier.forClass(ClassWithMissingFieldInToString.class).ignore("field2").containsAllPrivateFields(new ClassWithMissingFieldInToString());
+    }
+
+    @Ignore
+    @Test(expected = WrongToStringImplementationException.class)
+    public void containsAllPrivateFields_shouldBeAbleToHandleReflectionErrors() {
+        //TODO: use mockito or something to trigger this behaviour
+        ToStringVerifier.forClass(ClassWithToString.class).containsAllPrivateFields(new ClassWithToString());
     }
 
     @Test(expected = WrongToStringImplementationException.class)
@@ -41,7 +54,7 @@ public class ToStringVerifierTest {
 
     @Test(expected = WrongToStringImplementationException.class)
     public void containsClassName_shouldFailIfClassNameIsMissingFromToString() {
-        ToStringVerifier.forClass(ClassWithWrongToString.class).containsClassName(new ClassWithWrongToString());
+        ToStringVerifier.forClass(ClassWithMissingFieldInToString.class).containsClassName(new ClassWithMissingFieldInToString());
     }
 
     @Test
@@ -71,7 +84,20 @@ public class ToStringVerifierTest {
 
     }
 
-    private class ClassWithWrongToString {
+    private class ClassWithMissingValueInToString {
+        private final int field2 = 2;
+        private String field1 = "test";
+
+        @Override
+        public String toString() {
+            return "ClassWithMissingValueInToString{" +
+                    "field2=" + field2 +
+                    ", field1='" + "something" + '\'' +
+                    '}';
+        }
+    }
+
+    private class ClassWithMissingFieldInToString {
         private final int field2 = 2;
         private String field1 = "field1";
 
