@@ -96,7 +96,7 @@
                 <version>2.3.2</version>
                 <configuration>
                     <preparationGoals>clean test</preparationGoals>
-                    <mavenHome>I:\tools\maven</mavenHome>
+                    <!--<mavenHome>I:\tools\maven</mavenHome>-->
                 </configuration>
             </plugin>
         </plugins>
