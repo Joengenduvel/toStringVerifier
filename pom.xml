@@ -24,11 +24,11 @@
         </developer>
     </developers>
 
-    <!--<scm>
-        <url>https://github.com/Joengenduvel/toStringVerifier</url>
-        <connection>scm:git:https://github.com/Joengenduvel/toStringVerifier.git</connection>
-        <developerConnection>scm:git:https://github.com/Joengenduvel/toStringVerifier.git</developerConnection>
-  </scm>-->
+    <scm>
+        <url>https://github.com/joengenduvel/toStringVerifier</url>
+        <connection>scm:git:git://github.com/joengenduvel/toStringVerifier.git</connection>
+        <developerConnection>scm:git:git@github.com:joengenduvel/toStringVerifier.git</developerConnection>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
