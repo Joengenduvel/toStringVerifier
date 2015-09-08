@@ -3,7 +3,7 @@
     <groupId>be.joengenduvel.java.verifiers</groupId>
     <artifactId>to-string</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>toString verifier</name>
     <description>
         A tool to let you write unit test for the toString method.
@@ -28,7 +28,7 @@
         <url>https://github.com/Joengenduvel/toStringVerifier</url>
         <connection>scm:git:https://github.com/Joengenduvel/toStringVerifier.git</connection>
         <developerConnection>scm:git:https://github.com/Joengenduvel/toStringVerifier.git</developerConnection>
-      <tag>to-string-1.0.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <properties>
