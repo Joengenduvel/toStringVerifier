@@ -9,16 +9,16 @@ import java.util.List;
 public class ToStringVerifier<T> {
 
     private static final List<String> FIELDS_TO_ALWAYS_IGNORE = ConfigurationManager.getInstance().getFieldsToIgnore();
-    private final Class<T> classToVerify;
+    private final Class<? extends T> classToVerify;
     private final List<String> fieldsToIgnore;
 
 
-    private ToStringVerifier(Class<T> classToVerify) {
+    private ToStringVerifier(Class<? extends T> classToVerify) {
         this.classToVerify = classToVerify;
         this.fieldsToIgnore = new ArrayList<>();
     }
 
-    public static <R> ToStringVerifier<R> forClass(Class<R> classToVerify) {
+    public static <R> ToStringVerifier<R> forClass(Class<? extends R> classToVerify) {
         return new ToStringVerifier<>(classToVerify);
     }
 
