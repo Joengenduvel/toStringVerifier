@@ -1,5 +1,9 @@
 language: java
 jdk:
-  - oraclejdk8
-  - oraclejdk7
-  - openjdk7
+- oraclejdk8
+- oraclejdk7
+- openjdk7
+notifications:
+  slack:
+    rooms:
+      secure: GrSfcxsfoTkCofO6ie+brpanUW/85JzOnqdtNM0g7AI9jM7stzVyLuYAjgwB+ZxoX61m8vJpqK1k9v5f4BZkFjk8TNClNscc977XiXzD694sw1Q9h+12zloFSp6M/1WwLnF8eEjE3zduRXBj6LI1l9tGPWM7J9jWTApsl7xUFji1dUVHslephkqPMyU/wcARP03DrP6e4MhDNBzjVQLVlvyTrkwZxEdrY8QNptxs+mTikd9svqtmQON3mt1m/HO9CLq2Mlpt1NIQ+dm5mV1i7AFMkgToPGHk06BgORL10eXaCZpJn5sIg5liImppl7InXc/14NyNVmRlgLV/qfwYOAiCLma9YRNJ7+GuGujm0vMYo1MwTvg+btvPLFaWijNGWJA6mUxxqBVYWnTR62IaglcKxvz74ibTgx4ngfT93UYlmnZwqRozqrdwSwwWxyEJ24jfRmEKBjUVqRm1QOwCNuay0mXag9ePgH2MmL0I0JxMNjdnuy15T7WSUqHdk0lfM3des+8Hw7nuQ0sEc6u6Qy6oBexzZy3yjSBed0Hc+PNRNYuo74orhO6NyWNbFs+XHbxlqZGwwu7BB9V6VuqQ9IVR0mALb52jy3rKW7aELTGrc1rWglMt7K36dOB61Pu521Ako+X/2jmUBQmPjPeeBjQKLTXiVezTxG9/YGu7JNI=
